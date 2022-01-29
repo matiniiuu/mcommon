@@ -1,5 +1,6 @@
 package messages
 
 const (
-	GeneralError = "GeneralError"
+	GeneralError               = "GeneralError"
+	EmailOrPasswordIsIncorrect = "EmailOrPasswordIsIncorrect"
 )
