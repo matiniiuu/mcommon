@@ -48,8 +48,8 @@ func New(kind kind, msg string) error {
 
 func NewWithLogger(kind kind, msg string, logger logger.Logger, function string, err error) error {
 	logger.Error(err.Error(), map[string]interface{}{
-		"Function":       function,
-		"Return_Message": msg,
+		"Function":        function,
+		"ResponseMessage": msg,
 	})
 	return New(kind, msg)
 }
