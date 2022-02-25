@@ -38,12 +38,12 @@ var (
 		KindNotAllowed:   http.StatusMethodNotAllowed,
 		KindForbidden:    http.StatusForbidden,
 	}
-	grpcErrors = map[codes.Code]int{
-		codes.InvalidArgument:  http.StatusBadRequest,
-		codes.NotFound:         http.StatusNotFound,
-		codes.Unauthenticated:  http.StatusUnauthorized,
-		codes.Internal:         http.StatusInternalServerError,
-		codes.PermissionDenied: http.StatusBadRequest,
+	grpcErrors = map[codes.Code]kind{
+		codes.InvalidArgument:  KindInvalid,
+		codes.NotFound:         KindNotFound,
+		codes.Unauthenticated:  KindUnauthorized,
+		codes.Internal:         KindUnexpected,
+		codes.PermissionDenied: KindForbidden,
 	}
 )
 
@@ -55,9 +55,8 @@ func New(kind kind, msg string) error {
 	}
 }
 func NewGrpcError(kind kind, msg string) error {
-	httpCode := httpErrors[kind]
 	for key, value := range grpcErrors {
-		if value == httpCode {
+		if value == kind {
 			return status.New(key, msg).Err()
 		}
 	}
@@ -96,18 +95,18 @@ func HttpError(err error) (string, int) {
 
 }
 
-//GrpcError convert kind of error to Http status error
+//GrpcError convert kind of error to Derrors error
 //if error type is not serverError return 400 status code
-func ConvertGrpcErrorToHttpError(err error) (string, int) {
+func ConvertGrpcErrorToDerror(err error) error {
 	gError, ok := status.FromError(err)
 	if !ok {
-		return messages.GeneralError, http.StatusInternalServerError
+		return New(KindUnexpected, messages.GeneralError)
 	}
 	code, ok := grpcErrors[gError.Code()]
 	if !ok {
-		return gError.Message(), http.StatusBadRequest
+		return New(KindInvalid, gError.Message())
 	}
-	return gError.Message(), code
+	return New(code, gError.Message())
 }
 
 func As(err error) bool {
