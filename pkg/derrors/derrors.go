@@ -6,6 +6,8 @@ import (
 
 	"github.com/matiniiuu/mcommon/pkg/logger"
 	"github.com/matiniiuu/mcommon/pkg/translator/messages"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type (
@@ -36,6 +38,13 @@ var (
 		KindNotAllowed:   http.StatusMethodNotAllowed,
 		KindForbidden:    http.StatusForbidden,
 	}
+	grpcErrors = map[codes.Code]int{
+		codes.InvalidArgument:  http.StatusBadRequest,
+		codes.NotFound:         http.StatusNotFound,
+		codes.Unauthenticated:  http.StatusUnauthorized,
+		codes.Internal:         http.StatusInternalServerError,
+		codes.PermissionDenied: http.StatusBadRequest,
+	}
 )
 
 //New is constructor of the errors package
@@ -44,6 +53,15 @@ func New(kind kind, msg string) error {
 		kind:    kind,
 		message: msg,
 	}
+}
+func NewGrpcError(kind kind, msg string) error {
+	httpCode := httpErrors[kind]
+	for key, value := range grpcErrors {
+		if value == httpCode {
+			return status.New(key, msg).Err()
+		}
+	}
+	return status.New(codes.Internal, msg).Err()
 }
 
 func NewWithLogger(kind kind, msg string, logger logger.Logger, function string, err error) error {
@@ -76,6 +94,20 @@ func HttpError(err error) (string, int) {
 
 	return serverErr.message, code
 
+}
+
+//GrpcError convert kind of error to Http status error
+//if error type is not serverError return 400 status code
+func ConvertGrpcErrorToHttpError(err error) (string, int) {
+	gError, ok := status.FromError(err)
+	if !ok {
+		return messages.GeneralError, http.StatusInternalServerError
+	}
+	code, ok := grpcErrors[gError.Code()]
+	if !ok {
+		return gError.Message(), http.StatusBadRequest
+	}
+	return gError.Message(), code
 }
 
 func As(err error) bool {
