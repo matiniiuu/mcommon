@@ -54,6 +54,13 @@ func New(kind kind, msg string) error {
 		message: msg,
 	}
 }
+func NewWithLogger(kind kind, msg string, logger logger.Logger, function string, err error) error {
+	logger.Error(err.Error(), map[string]interface{}{
+		"Function":        function,
+		"ResponseMessage": msg,
+	})
+	return New(kind, msg)
+}
 func NewGrpcError(kind kind, msg string) error {
 	for key, value := range grpcErrors {
 		if value == kind {
@@ -61,14 +68,6 @@ func NewGrpcError(kind kind, msg string) error {
 		}
 	}
 	return status.New(codes.Internal, msg).Err()
-}
-
-func NewWithLogger(kind kind, msg string, logger logger.Logger, function string, err error) error {
-	logger.Error(err.Error(), map[string]interface{}{
-		"Function":        function,
-		"ResponseMessage": msg,
-	})
-	return New(kind, msg)
 }
 
 //Error return message of error
@@ -96,17 +95,18 @@ func HttpError(err error) (string, int) {
 }
 
 //GrpcError convert kind of error to Derrors error
-//if error type is not serverError return 400 status code
-func ConvertGrpcErrorToDerror(err error) error {
+//if error type is not serverError return KindInvalid status code
+func ConvertGrpcError(err error) (string, kind) {
 	gError, ok := status.FromError(err)
 	if !ok {
-		return New(KindUnexpected, messages.GeneralError)
+		return messages.GeneralError, KindUnexpected
 	}
 	code, ok := grpcErrors[gError.Code()]
 	if !ok {
-		return New(KindInvalid, gError.Message())
+		return gError.Message(), KindInvalid
+
 	}
-	return New(code, gError.Message())
+	return gError.Message(), code
 }
 
 func As(err error) bool {
