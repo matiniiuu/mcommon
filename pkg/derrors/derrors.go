@@ -96,17 +96,17 @@ func HttpError(err error) (string, int) {
 
 //GrpcError convert kind of error to Derrors error
 //if error type is not serverError return KindInvalid status code
-func ConvertGrpcError(err error) (string, kind) {
+func ConvertGrpcError(err error) (kind, string) {
 	gError, ok := status.FromError(err)
 	if !ok {
-		return messages.GeneralError, KindUnexpected
+		return KindUnexpected, messages.GeneralError
 	}
 	code, ok := grpcErrors[gError.Code()]
 	if !ok {
-		return gError.Message(), KindInvalid
+		return KindInvalid, gError.Message()
 
 	}
-	return gError.Message(), code
+	return code, gError.Message()
 }
 
 func As(err error) bool {
