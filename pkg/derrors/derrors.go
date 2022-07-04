@@ -112,3 +112,12 @@ func ConvertGrpcError(err error) (kind, string) {
 func As(err error) bool {
 	return errors.As(err, &serverError{})
 }
+func GetServerError(err error) (kind, string) {
+	var serverErr serverError
+
+	ok := errors.As(err, &serverErr)
+	if !ok {
+		return http.StatusInternalServerError, messages.GeneralError
+	}
+	return serverErr.kind, serverErr.Error()
+}
