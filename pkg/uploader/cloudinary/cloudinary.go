@@ -11,7 +11,7 @@ type (
 	Cloudinary struct{}
 )
 
-func New() uploader.Uploader {
-	cld = connectCloudinary()
+func New(cloudinaryURL string) uploader.Uploader {
+	cld = connectCloudinary(cloudinaryURL)
 	return &Cloudinary{}
 }

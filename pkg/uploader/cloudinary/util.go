@@ -6,8 +6,8 @@ import (
 	"github.com/cloudinary/cloudinary-go/v2"
 )
 
-func connectCloudinary() *cloudinary.Cloudinary {
-	cld, err := cloudinary.NewFromURL("cloudinary://952375858838726:vjPMa9qbGgN7CVX4p3ZFcfMDakI@goldilan")
+func connectCloudinary(cloudinaryURL string) *cloudinary.Cloudinary {
+	cld, err := cloudinary.NewFromURL(cloudinaryURL)
 	if err != nil {
 		log.Fatalln(err)
 	}
