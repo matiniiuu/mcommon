@@ -13,7 +13,7 @@ type messageBundle struct {
 	bundle *i18n.Bundle
 }
 
-//New is constructor of the i18n package
+// New is constructor of the i18n package
 func New(path string) (translator.Translator, error) {
 	bundle := &messageBundle{
 		bundle: i18n.NewBundle(language.English),
@@ -47,21 +47,8 @@ func (m *messageBundle) getLocalized(lang string) *i18n.Localizer {
 	return i18n.NewLocalizer(m.bundle, lang)
 }
 
-//Translate is a translate whose translates keywords based on the input language
-func (m *messageBundle) Translate(key string, languages ...translator.Language) string {
-	lang := translator.EN
-
-	for _, l := range languages {
-		switch l {
-		case translator.EN:
-			lang = translator.EN
-			break
-		case translator.FA:
-			lang = translator.FA
-			break
-		}
-	}
-
+// Translate is a translate whose translates keywords based on the input language
+func (m *messageBundle) Translate(key string, lang translator.Language) string {
 	message, err := m.getLocalized(string(lang)).Localize(&i18n.LocalizeConfig{MessageID: key})
 
 	if err != nil {

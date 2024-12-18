@@ -20,26 +20,17 @@ func TestMessageBundle_Translate(t *testing.T) {
 	}{
 		{
 			name: "translate farsi",
-			args: args{
-				message:  messages.GeneralError,
-				language: translator.GetLanguage("fa"),
-			},
+			args: args{message: messages.GeneralError, language: "fa"},
 			want: "خطایی وجود دارد",
 		},
 		{
 			name: "translate english",
-			args: args{
-				message:  messages.GeneralError,
-				language: translator.GetLanguage("en"),
-			},
+			args: args{message: messages.UserNotFound, language: "en"},
 			want: "user not found",
 		},
 		{
 			name: "message key not found",
-			args: args{
-				message:  "NoKeyFound",
-				language: translator.GetLanguage("en"),
-			},
+			args: args{message: "NoKeyFound", language: "en"},
 			want: "NoKeyFound",
 		},
 	}

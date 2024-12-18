@@ -1,12 +1,5 @@
-# invalid
-InvalidWalletStatus = "invalid wallet status"
-InvalidUserStatus = "invalid user status"
-InvalidBookStatus = "invalid book status"
-InvalidGender = "invalid gender"
-InvalidRole = "invalid role"
+# general
+GeneralError = "error is exist"
 
 # no found
 UserNotFound = "user not found"
-
-# general
-DBError = "error is exist"
