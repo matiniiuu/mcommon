@@ -7,6 +7,7 @@ require (
 	github.com/alecthomas/units v0.0.0-20240927000941-0f3dac36c52b
 	github.com/cloudinary/cloudinary-go/v2 v2.9.0
 	github.com/google/uuid v1.6.0
+	github.com/joho/godotenv v1.5.1
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/nicksnyder/go-i18n/v2 v2.4.1
 	github.com/sirupsen/logrus v1.9.3
@@ -15,6 +16,7 @@ require (
 	golang.org/x/crypto v0.30.0
 	golang.org/x/text v0.21.0
 	google.golang.org/grpc v1.68.1
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (

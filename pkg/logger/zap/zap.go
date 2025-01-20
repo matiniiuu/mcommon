@@ -12,7 +12,7 @@ type log struct {
 
 type Options struct {
 	logger.Options
-	level zapcore.Level
+	Level zapcore.Level
 }
 
 func New(opt *Options) (logger.Logger, error) {
@@ -29,11 +29,19 @@ func New(opt *Options) (logger.Logger, error) {
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	enc := zapcore.NewJSONEncoder(encoderConfig)
-	core := zapcore.NewCore(enc, ws, opt.level)
+	core := zapcore.NewCore(enc, ws, opt.Level)
 
 	z := zap.New(core)
 	sugarLogger := z.Sugar()
 	return &log{sugarLogger}, nil
+}
+
+func mapToZapFields(m map[string]interface{}) []interface{} {
+	keysAndValues := make([]interface{}, 0, len(m)*2)
+	for k, v := range m {
+		keysAndValues = append(keysAndValues, k, v)
+	}
+	return keysAndValues
 }
 
 func (l *log) Sync() {
@@ -41,13 +49,13 @@ func (l *log) Sync() {
 }
 
 func (l *log) Error(msg string, kv map[string]interface{}) {
-	l.zap.Errorw(msg, kv)
+	l.zap.Errorw(msg, mapToZapFields(kv)...)
 }
 
 func (l *log) Warning(msg string, kv map[string]interface{}) {
-	l.zap.Warnw(msg, kv)
+	l.zap.Warnw(msg, mapToZapFields(kv)...)
 }
 
 func (l *log) Info(msg string, kv map[string]interface{}) {
-	l.zap.Infow(msg, kv)
+	l.zap.Infow(msg, mapToZapFields(kv)...)
 }
