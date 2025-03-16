@@ -10,8 +10,23 @@ type (
 		Server   Server   `yaml:"server"`
 		I18n     I18n     `yaml:"i18n"`
 		Logger   Logger   `yaml:"logger"`
+		Uploader Uploader `yaml:"uploader"`
 		ENV      string   `env:"ENVIRONMENT"`
 	}
+	Uploader struct {
+		AwsS3      AwsS3      `yaml:"aws_s3"`
+		Cloudinary Cloudinary `yaml:"cloudinary"`
+	}
+	AwsS3 struct {
+		S3AccessKey string `yaml:"s3_access_key" env:"S3_ACCESS_KEY"`
+		S3SecretKey string `yaml:"s3_secret_key" env:"S3_SECRET_KEY"`
+		S3Region    string `yaml:"s3_region" env:"S3_REGION"`
+		S3Bucket    string `yaml:"s3_bucket" env:"S3_BUCKET"`
+	}
+	Cloudinary struct {
+		Url string `yaml:"cloudinary_url" env:"CLOUDINARY_URL"`
+	}
+
 	Database struct {
 		MongoDB MongoDB `yaml:"mongodb"`
 	}
