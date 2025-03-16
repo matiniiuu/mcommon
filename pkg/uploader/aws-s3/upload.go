@@ -1,4 +1,4 @@
-package cloudinary
+package aws_s3
 
 import (
 	"bytes"
@@ -19,10 +19,10 @@ func (a *AwsS3) Upload(file multipart.File, folder, filename string) (string, er
 	if err != nil {
 		return "", err
 	}
-
+	fileKey := fmt.Sprintf("%s/%s", folder, filename)
 	_, err = a.awsS3.PutObject(context.TODO(), &s3.PutObjectInput{
 		Bucket:             aws.String(a.bucket),
-		Key:                aws.String(fmt.Sprintf("%s/%s", folder, filename)),
+		Key:                aws.String(fileKey),
 		Body:               file,
 		ContentType:        aws.String(mimetype),
 		ACL:                types.ObjectCannedACLPublicRead,
@@ -32,7 +32,7 @@ func (a *AwsS3) Upload(file multipart.File, folder, filename string) (string, er
 		return "", err
 	}
 
-	return "", nil
+	return fmt.Sprintf("%s/%s", a.baseUrl, fileKey), nil
 }
 
 func (a *AwsS3) UploadBase24(base64File, folder, filename string) (string, error) {
@@ -40,7 +40,7 @@ func (a *AwsS3) UploadBase24(base64File, folder, filename string) (string, error
 	if err != nil {
 		return "", err
 	}
-
+	fileKey := fmt.Sprintf("%s/%s", folder, filename)
 	_, err = a.awsS3.PutObject(context.TODO(), &s3.PutObjectInput{
 		Bucket:             aws.String(a.bucket),
 		Key:                aws.String(fmt.Sprintf("%s/%s", folder, filename)),
@@ -52,6 +52,5 @@ func (a *AwsS3) UploadBase24(base64File, folder, filename string) (string, error
 	if err != nil {
 		return "", err
 	}
-
-	return "", nil
+	return fmt.Sprintf("%s/%s", a.baseUrl, fileKey), nil
 }

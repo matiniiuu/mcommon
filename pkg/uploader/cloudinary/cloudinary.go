@@ -1,9 +1,8 @@
 package cloudinary
 
 import (
-	"log"
-
 	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/matiniiuu/mcommon/pkg/mconfig"
 	"github.com/matiniiuu/mcommon/pkg/uploader"
 )
 
@@ -13,10 +12,10 @@ type (
 	}
 )
 
-func New(cloudinaryURL string) uploader.Uploader {
-	cld, err := cloudinary.NewFromURL(cloudinaryURL)
+func New(cfg *mconfig.Cloudinary) (uploader.Uploader, error) {
+	cld, err := cloudinary.NewFromURL(cfg.Url)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
-	return &Cloudinary{cld: cld}
+	return &Cloudinary{cld: cld}, nil
 }

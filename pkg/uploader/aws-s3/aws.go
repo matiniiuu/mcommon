@@ -1,8 +1,7 @@
-package cloudinary
+package aws_s3
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
@@ -13,21 +12,25 @@ import (
 
 type (
 	AwsS3 struct {
-		bucket string
-		awsS3  *s3.Client
+		baseUrl string
+		bucket  string
+		awsS3   *s3.Client
 	}
 )
 
-func New(cfg mconfig.AwsS3) uploader.Uploader {
+func New(cfg *mconfig.AwsS3) (uploader.Uploader, error) {
 	awsConfig, err := config.LoadDefaultConfig(
 		context.TODO(),
 		config.WithRegion(cfg.S3Region),
 		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(cfg.S3AccessKey, cfg.S3SecretKey, "")),
 	)
 	if err != nil {
-		fmt.Println(err)
-		return nil
+		return nil, err
 	}
 
-	return &AwsS3{awsS3: s3.NewFromConfig(awsConfig), bucket: cfg.S3Bucket}
+	return &AwsS3{
+		awsS3:   s3.NewFromConfig(awsConfig),
+		bucket:  cfg.S3Bucket,
+		baseUrl: cfg.S3BaseUrl,
+	}, nil
 }

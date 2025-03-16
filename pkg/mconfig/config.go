@@ -22,6 +22,7 @@ type (
 		S3SecretKey string `yaml:"s3_secret_key" env:"S3_SECRET_KEY"`
 		S3Region    string `yaml:"s3_region" env:"S3_REGION"`
 		S3Bucket    string `yaml:"s3_bucket" env:"S3_BUCKET"`
+		S3BaseUrl   string `yaml:"s3_base_url" env:"S3_BASE_URL"`
 	}
 	Cloudinary struct {
 		Url string `yaml:"cloudinary_url" env:"CLOUDINARY_URL"`

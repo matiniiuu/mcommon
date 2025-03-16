@@ -18,8 +18,8 @@ type (
 	}
 )
 
-func GenerateFileName(originalFilename string) (string, error) {
-	return fmt.Sprintf("%s%s", uuid.New().String(), filepath.Ext(originalFilename)), nil
+func GenerateFileName(originalFilename string) string {
+	return fmt.Sprintf("%s%s", uuid.New().String(), filepath.Ext(originalFilename))
 }
 
 func GetMimetype(file multipart.File) (string, error) {
