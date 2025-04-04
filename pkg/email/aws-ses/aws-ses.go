@@ -1,4 +1,4 @@
-package aws_s3
+package aws_ses
 
 import (
 	"context"
