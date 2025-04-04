@@ -12,6 +12,7 @@ type (
 		Logger   Logger   `yaml:"logger"`
 		Uploader Uploader `yaml:"uploader"`
 		Queue    Queue    `yaml:"queue"`
+		Email    Email    `yaml:"email"`
 		ENV      string   `env:"ENVIRONMENT"`
 	}
 
@@ -63,5 +64,14 @@ type (
 	}
 	RabbitMq struct {
 		Url string `yaml:"rabbitmq_url" env:"RABBITMQ_URL"`
+	}
+	Email struct {
+		AwsSES AwsSES `yaml:"aws_ses"`
+	}
+	AwsSES struct {
+		SESAccessKey  string `yaml:"ses_access_key" env:"SES_ACCESS_KEY"`
+		SESSecretKey  string `yaml:"ses_secret_key" env:"SES_SECRET_KEY"`
+		SESRegion     string `yaml:"ses_region" env:"SES_REGION"`
+		SESSourceMail string `yaml:"ses_source_mail" env:"SES_SOURCE_MAIL"`
 	}
 )
