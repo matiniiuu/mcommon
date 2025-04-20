@@ -13,6 +13,7 @@ type (
 		Uploader Uploader `yaml:"uploader"`
 		Queue    Queue    `yaml:"queue"`
 		Email    Email    `yaml:"email"`
+		SMS      SMS      `yaml:"sms"`
 		ENV      string   `env:"ENVIRONMENT"`
 	}
 
@@ -73,5 +74,11 @@ type (
 		SESSecretKey  string `yaml:"ses_secret_key" env:"SES_SECRET_KEY"`
 		SESRegion     string `yaml:"ses_region" env:"SES_REGION"`
 		SESSourceMail string `yaml:"ses_source_mail" env:"SES_SOURCE_MAIL"`
+	}
+	SMS struct {
+		Authentica Authentica `yaml:"authentica"`
+	}
+	Authentica struct {
+		AuthorizationKey string `yaml:"authentica_authorization_key" env:"AUTHENTICA_AUTHORIZATION_KEY"`
 	}
 )
