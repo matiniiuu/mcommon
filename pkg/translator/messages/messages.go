@@ -5,4 +5,5 @@ const (
 	UserNotFound               = "UserNotFound"
 	EmailOrPasswordIsIncorrect = "EmailOrPasswordIsIncorrect"
 	UnsupportedHashingMethod   = "UnsupportedHashingMethod"
+	ParseQueryError            = "ParseQueryError"
 )
