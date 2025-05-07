@@ -1,5 +1,7 @@
 package mconfig
 
+import "github.com/matiniiuu/mcommon/pkg/paytabs/enums"
+
 type (
 	//* example of how you should define your Config Based on BASE config
 	// Config struct {
@@ -14,6 +16,7 @@ type (
 		Queue    Queue    `yaml:"queue"`
 		Email    Email    `yaml:"email"`
 		SMS      SMS      `yaml:"sms"`
+		Paytabs  Paytabs  `yaml:"paytabs"`
 		ENV      string   `env:"ENVIRONMENT"`
 	}
 
@@ -79,6 +82,12 @@ type (
 		Authentica Authentica `yaml:"authentica"`
 	}
 	Authentica struct {
-		AuthorizationKey string `yaml:"authentica_authorization_key" env:"AUTHENTICA_AUTHORIZATION_KEY"`
+		AuthorizationKey string `yaml:"authorization_key" env:"AUTHENTICA_AUTHORIZATION_KEY"`
+	}
+
+	Paytabs struct {
+		ProfileId uint                `yaml:"profile_id" env:"PAYTABS_PROFILE_ID"`
+		ServerKey string              `yaml:"server_key" env:"PAYTABS_SERVER_KEY"`
+		Region    enums.PaytabsRegion `yaml:"region" env:"PAYTABS_REGION"`
 	}
 )

@@ -1,29 +1,46 @@
 package authentica
 
 import (
-	"github.com/matiniiuu/mcommon/pkg/authentica/enums"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+
+	"github.com/matiniiuu/mcommon/pkg/derrors"
 	"github.com/matiniiuu/mcommon/pkg/mconfig"
 )
 
 type (
-	AuthenticaSendRequest struct {
-		TemplateId     string            `json:"template_id,omitempty"`
-		Phone          string            `json:"phone,omitempty"`
-		Method         enums.Method      `json:"method,omitempty"`
-		NumberOfDigits int               `json:"number_of_digits,omitempty"`
-		OtpFormat      enums.OtpFormat   `json:"otp_format,omitempty"`
-		IsFallbackOn   bool              `json:"is_fallback_on,omitempty"`
-		FallbackMethod enums.Method      `json:"fallback_method,omitempty"`
-		FallbackPhone  string            `json:"fallback_phone,omitempty"`
-		Otp            int               `json:"otp,omitempty"`
-		SenderName     string            `json:"sender_name,omitempty"`
-		Environment    enums.Environment `json:"environment"`
-	}
-	Authentica interface {
+	IAuthentica interface {
 		Send(*AuthenticaSendRequest) error
 	}
+	Authentica struct{ authorizationKey string }
 )
 
-func New(cfg *mconfig.Authentica) (Authentica, error) {
-	return &authentica{authorizationKey: cfg.AuthorizationKey}, nil
+func New(cfg *mconfig.Authentica) IAuthentica {
+	return &Authentica{authorizationKey: cfg.AuthorizationKey}
+}
+
+func (a *Authentica) Send(dto *AuthenticaSendRequest) error {
+	client := &http.Client{}
+
+	body, _ := json.Marshal(dto)
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/send-otp", dto.Environment.GetURL()), bytes.NewBuffer(body))
+
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("X-Authorization", a.authorizationKey)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode == 200 {
+		return nil
+	}
+	resp_body, _ := io.ReadAll(resp.Body)
+	return derrors.New(derrors.KindUnexpected, string(resp_body))
 }

@@ -4,12 +4,13 @@ import (
 	"testing"
 
 	"github.com/matiniiuu/mcommon/pkg/authentica/enums"
+	"github.com/matiniiuu/mcommon/pkg/mconfig"
 )
 
 func TestSend_Live(t *testing.T) {
-	auth := &authentica{
-		authorizationKey: "test",
-	}
+	authentica := New(&mconfig.Authentica{
+		AuthorizationKey: "test",
+	})
 
 	req := &AuthenticaSendRequest{
 		TemplateId:     "6",
@@ -24,7 +25,7 @@ func TestSend_Live(t *testing.T) {
 		Environment:    enums.MockServer,
 	}
 
-	err := auth.Send(req)
+	err := authentica.Send(req)
 	if err != nil {
 		t.Fatalf("Real API call failed: %v", err)
 	}

@@ -1,6 +1,7 @@
 package mutils
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/jinzhu/copier"
@@ -130,6 +131,7 @@ func GetCopier(toValue interface{}, fromValue interface{}, options ...copier.Typ
 		IgnoreEmpty: true,
 		DeepCopy:    true,
 		Converters:  converters}); err != nil {
+		fmt.Println(err.Error())
 		return derrors.New(derrors.KindInvalid, messages.ParseQueryError)
 	}
 	return nil

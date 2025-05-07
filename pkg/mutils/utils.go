@@ -12,3 +12,6 @@ func Float64Pointer(f float64) *float64 {
 func Int32Pointer(i int32) *int32 {
 	return &i
 }
+func UintPointer(i int32) *int32 {
+	return &i
+}
