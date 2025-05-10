@@ -10,7 +10,7 @@ import (
 
 func TestCreateTransactionRequest(t *testing.T) {
 	auth := New(&mconfig.Paytabs{
-		ProfileId: 0,
+		ProfileId: "0",
 		ServerKey: "",
 		Region:    enums.SAU,
 	})
@@ -44,7 +44,7 @@ func TestCreateTransactionRequest(t *testing.T) {
 }
 func TestValidatePayment(t *testing.T) {
 	auth := New(&mconfig.Paytabs{
-		ProfileId: 0,
+		ProfileId: "0",
 		ServerKey: "",
 		Region:    enums.SAU,
 	})

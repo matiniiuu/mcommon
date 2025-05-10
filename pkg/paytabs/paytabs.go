@@ -23,7 +23,7 @@ type (
 		ValidatePayment(dto *ValidatePaymentRequest) (*ValidatePaymentResponse, error)
 	}
 	Paytabs struct {
-		profileId uint
+		profileId string
 		serverKey string
 		region    enums.PaytabsRegion
 	}

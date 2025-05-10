@@ -18,7 +18,7 @@ type (
 		RedirectUrl    string `json:"redirect_url"`
 	}
 	CreateTransactionRequest struct {
-		ProfileId        uint                          `json:"profile_id"`
+		ProfileId        string                        `json:"profile_id"`
 		TransactionType  enums.PaytabsTransactionType  `json:"tran_type"`
 		TransactionClass enums.PaytabsTransactionClass `json:"tran_class"`
 
@@ -53,11 +53,11 @@ type (
 	}
 
 	ValidatePaymentRequest struct {
-		ProfileId      uint   `json:"profile_id"`
+		ProfileId      string `json:"profile_id"`
 		TransactionRef string `json:"tran_ref"`
 	}
 	ValidatePaymentResponse struct {
-		ProfileId      uint   `json:"profile_id"`
+		ProfileId      string `json:"profile_id"`
 		TransactionRef string `json:"tran_ref"`
 		PaymentResult  struct {
 			ResponseStatus  string `json:"response_status"`

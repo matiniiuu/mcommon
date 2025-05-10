@@ -86,7 +86,7 @@ type (
 	}
 
 	Paytabs struct {
-		ProfileId uint                `yaml:"profile_id" env:"PAYTABS_PROFILE_ID"`
+		ProfileId string              `yaml:"profile_id" env:"PAYTABS_PROFILE_ID"`
 		ServerKey string              `yaml:"server_key" env:"PAYTABS_SERVER_KEY"`
 		Region    enums.PaytabsRegion `yaml:"region" env:"PAYTABS_REGION"`
 	}
