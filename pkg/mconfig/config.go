@@ -65,10 +65,17 @@ type (
 	}
 	Queue struct {
 		RabbitMq RabbitMq `yaml:"rabbitmq"`
+		Kafka    Kafka    `yaml:"kafka"`
 	}
 	RabbitMq struct {
 		Url string `yaml:"rabbitmq_url" env:"RABBITMQ_URL"`
 	}
+	Kafka struct {
+		Address  string `yaml:"address" env:"KAFKA_ADDRESS"`
+		Username string `yaml:"username" env:"KAFKA_USERNAME"`
+		Password string `yaml:"password" env:"KAFKA_PASSWORD"`
+	}
+
 	Email struct {
 		AwsSES AwsSES `yaml:"aws_ses"`
 	}
